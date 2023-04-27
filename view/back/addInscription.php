@@ -2,7 +2,7 @@
 include_once 'C:/xampp/htdocs/projet/Controller/inscriptionC.php';
 require_once 'C:/xampp/htdocs/projet/model/inscription.php';
 $inscriptionC = new InscriptionC();
-$liste = $inscriptionC->afficher_offre(); // appel fonction d'affichage
+$liste = $inscriptionC->afficher_offre();
 
 if(isset($_POST['id_of']) &&
     isset($_POST['id_ur']) &&
@@ -435,27 +435,7 @@ if(isset($_POST['id_of']) &&
 
 
 
-      /*  if (!/^[A-Z0-9]+$/.test(codePromo)) {
-            alert("Le code promo doit contenir seulement des lettres majuscules et des chiffres.");
-            document.getElementById("msgDiv12").innerHTML = "id doit etre positive! ";
-            preventdefault();
-            returnToPreviousPage();
-            return false;
-        }
-        if (!/^[A-Za-z]+$/.test(titre)) {
-            alert("Le titre contient d'autres caractères en plus des lettres");
-            document.getElementById("msgDiv12").innerHTML = "id doit etre positive! ";
-            preventdefault();
-            returnToPreviousPage();
-            return false;
-        }
-        if (!!/^[A-Za-z0-9!@#$%^&*]+$/.test(description)) {
-            alert("La description doit contenir des lettres et des symboles.");
-            document.getElementById("msgDiv12").innerHTML = "id doit etre positive! ";
-            preventdefault();
-            returnToPreviousPage();
-            return false;
-        }*/
+
         if ( id_ur === '' || date_debut === '' || date_fin === '' || motif === '') {
             alert('Veuillez remplir tous les champs');
             return false;

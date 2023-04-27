@@ -668,8 +668,8 @@ if(isset($_POST['titre']) &&
         var msgDiv = document.getElementById("msgDiv");
         msgDiv.innerHTML = ""; // Réinitialiser les messages d'erreur
 
-        if (!/[0-9!@#$%^&*]+$/.test(prix)) {
-            msgDiv.innerHTML = "La forme du prix est incorrecte.";
+        if (!!/^[0-9!@#$%^&*]+$/.test(prix)) {
+            msgDiv.innerHTML = "La format du prix est incorrecte.";
             return false;
         }
 
