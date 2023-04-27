@@ -18,8 +18,8 @@ class OffreC{
     }
 
     function ajouter_offre(Offre $offre){
-        $sql="INSERT INTO offre (titre, description, codePromo, date) 
-				VALUES (:titre, :description, :codePromo, :date)";
+        $sql="INSERT INTO offre (titre, description, prix, date) 
+				VALUES (:titre, :description, :prix, :date)";
         $db = config::getConnexion();
         try{
             $query = $db->prepare($sql);
@@ -27,7 +27,7 @@ class OffreC{
             $query->execute([
                 'titre' => $offre->getTitre(),
                 'description' => $offre->getDescription(),
-                'codePromo' => $offre->getCodePromo(),
+                'prix' => $offre->getPrix(),
                 'date' => $offre->getDate()
             ]);
         }
@@ -56,7 +56,7 @@ class OffreC{
                 "UPDATE offre SET 
 						titre = :titre, 
 						description = :description, 
-						codePromo = :codePromo,
+						prix = :prix,
                         date = :date
 					WHERE id = :id"
             );
@@ -64,7 +64,7 @@ class OffreC{
             $query->execute([
                 'titre' => $offre->getTitre(),
                 'description' => $offre->getDescription(),
-                'codePromo' => $offre->getCodePromo(),
+                'prix' => $offre->getPrix(),
                 'date' => $offre->getDate(),
                 'id' => $id
             ]);
@@ -86,6 +86,33 @@ class OffreC{
             echo $th->getMessage();
         }
     }
+    function rechercheOffre($recherche){
+        $sql="SELECT * FROM offre WHERE titre LIKE :recherche OR description LIKE :recherche";
+        $db = config::getConnexion();
+        try {
+            $query = $db->prepare($sql);
+            $query->bindValue(':recherche', '%' . $recherche . '%');
+            $query->execute();
+            $result = $query->fetchAll();
+            return $result;
+        } catch (Exception $e) {
+            echo 'Erreur: '.$e->getMessage();
+        }
+    }
+    function trier_offres_par_prix(){
+        $sql = "SELECT * FROM offre ORDER BY prix ASC";
+        $db = config::getConnexion();
+        try {
+            $query = $db->query($sql);
+            $result = $query->fetchAll();
+            return $result;
+        } catch (Exception $e) {
+            echo 'Erreur: '.$e->getMessage();
+        }
+    }
+
+
 
 }
+
 ?>

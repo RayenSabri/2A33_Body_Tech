@@ -4,14 +4,14 @@ class Offre {
     private $id;
     private $titre;
     private $description;
-    private $codePromo;
+    private $prix;
     private $date;
 
-    public function __construct($id, $titre, $description, $codePromo, $date) {
+    public function __construct($id, $titre, $description, $prix, $date) {
         $this->id = $id;
         $this->titre = $titre;
         $this->description = $description;
-        $this->CodePromo = $codePromo;
+        $this->prix = $prix;
         $this->date = $date;
     }
 
@@ -28,8 +28,8 @@ class Offre {
         return $this->description;
     }
 
-    public function getCodePromo() {
-        return $this->CodePromo;
+    public function getPrix() {
+        return $this->prix;
     }
 
     public function getDate() {
@@ -49,8 +49,8 @@ class Offre {
         $this->description = $description;
     }
 
-    public function setCodePromo($codePromo) {
-        $this->CodePromo = $codePromo;
+    public function setPrix($prix) {
+        $this->prix = $prix;
     }
 
     public function setDate($date) {
