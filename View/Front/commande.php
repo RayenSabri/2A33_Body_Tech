@@ -8,43 +8,31 @@ include '../../Model/Commandes.php';
 $error = "";
 
 // create commande
+$id_produit = $_GET['id_produit'];
 $commandes = null;
 $produitsP = new produitsP();
 $produits = $produitsP->listeproduits();
 
 // create an instance of the controller
 $commandesC = new CommandesC();
-if (
-    isset($_POST["nom"]) &&
-    isset($_POST["prenom"]) &&
-    isset($_POST["adresse"]) &&
-    isset($_POST["numTel"]) &&
-    isset($_POST["id_produit"])
-) 
-{
-    if (
-        !empty($_POST['nom']) &&
-        !empty($_POST["prenom"]) &&
-        !empty($_POST["adresse"]) &&       
-        !empty($_POST["numTel"])&&
-        !empty($_POST["id_produit"]) 
-    ) 
-{
-        $commandes = new Commandes(
-            null,
-            $_POST['nom'],
-            $_POST['prenom'],
-            $_POST['adresse'],           
-            $_POST['numTel'],
-            $_POST['id_produit']
-        );
-        $commandesC->addCommandes($commandes);
-        header('Location: index.php');
-    } else
-        $error = "Missing information";
+
+if(isset($_POST["submit"])) {
+  // create an instance of the controller
+  $commandesC = new CommandesC();
+
+  // create commande
+  $commande = new Commandes(
+    null,
+    $_POST['nom'],
+    $_POST['prenom'],
+    $_POST['adresse'],
+    $_POST['numTel'],
+    $_POST['id_produit']
+  );
+
+  $commandesC->addCommandes($commande);
+  header('Location: index.php');
 }
-
-
 ?>
 
 <!DOCTYPE html>
@@ -147,45 +135,28 @@ https://templatemo.com/tm-546-sixteen-clothing
           </div>
           <div class="col-md-8">
             <div class="panier-form">
-            <form id="panier" action="" method="post">
-  <div class="row">
-    <div class="col-lg-12 col-md-12 col-sm-12">
-      <fieldset>
-        <input name="nom" type="text" class="form-control" id="nom" placeholder="nom" required="">
-      </fieldset>
-    </div>
-    <div class="col-lg-12 col-md-12 col-sm-12">
-      <fieldset>
-        <input name="prenom" type="text" class="form-control" id="prenom" placeholder="prenom" required="">
-      </fieldset>
-    </div>
-    <div class="col-lg-12 col-md-12 col-sm-12">
-      <fieldset>
-        <input name="adresse" type="text" class="form-control" id="adresse" placeholder="adresse" required="">
-      </fieldset>
-    </div>
-    <div class="col-lg-12 col-md-12 col-sm-12">
-      <fieldset>
-        <input name="numTel" type="text" class="form-control" id="numTel" placeholder="numTel" required="">
-      </fieldset>
-    </div>
-    <div class="col-lg-12 col-md-12 col-sm-12">
-    <select name="id_produit" class="form-control" required="">
-  <option value="">-- Choisissez un produit --</option>
-  <?php
-    $produits = $produitsP->listeproduits();
-    foreach ($produits as $produit) {
-      echo '<option value="' . $produit['id_produit'] . '">' . $produit['id_produit'] . ' - ' . $produit['nom'] . '</option>';
-    }
-  ?>
-</select>
-    </div>
-    <div class="col-lg-12">
-      <fieldset>
-        <button type="submit" value="Save" id="form-submit" class="filled-button">ajouter</button>
-      </fieldset>
-    </div>
+            <form method="post" action="">
+  <div class="form-group">
+    <label for="nom">Nom:</label>
+    <input type="text" class="form-control" id="nom" name="nom" required>
   </div>
+  <div class="form-group">
+    <label for="prenom">Prenom:</label>
+    <input type="text" class="form-control" id="prenom" name="prenom" required>
+  </div>
+  <div class="form-group">
+    <label for="adresse">Adresse:</label>
+    <input type="text" class="form-control" id="adresse" name="adresse" required>
+  </div>
+  <div class="form-group">
+    <label for="numTel">Numéro de téléphone:</label>
+    <input type="tel" class="form-control" id="numTel" name="numTel" required>
+  </div>
+  <div class="form-group">
+    <label for="id_produit">Produit ID:</label>
+    <input type="number" class="form-control" id="id_produit" name="id_produit" value="<?php echo $id_produit; ?>" readonly>
+  </div>
+  <button type="submit" class="btn btn-primary" style="background-color: #AF3535;" name="submit">Ajouter Commande</button>
 </form>
             </div>
           </div>

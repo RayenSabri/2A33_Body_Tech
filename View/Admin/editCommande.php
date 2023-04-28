@@ -10,11 +10,13 @@ $commande = null;
 
 // create an instance of the controller
 $CommandesC = new CommandesC();
+
 if (
     isset($_POST["numC"]) &&
     isset($_POST["nom"]) &&
     isset($_POST["prenom"]) &&
     isset($_POST["adresse"]) &&
+    isset($_POST["id_produit"]) &&
     isset($_POST["numTel"])
 ) {
     if (
@@ -22,6 +24,7 @@ if (
         !empty($_POST['nom']) &&
         !empty($_POST["prenom"]) &&
         !empty($_POST["adresse"]) &&
+        !empty($_POST["id_produit"]) &&
         !empty($_POST["numTel"])
     ) {
         $commande = new Commandes(
@@ -29,6 +32,7 @@ if (
             $_POST['nom'],
             $_POST['prenom'],
             $_POST['adresse'],
+            $_POST['id_produit'],
             $_POST['numTel']
         );
         $CommandesC->updateCommande($commande, $_POST["numC"]);
@@ -86,11 +90,11 @@ if (
             <!-- menu profile quick info -->
             <div class="profile clearfix" >
               <div class="profile_pic">
-                <img src="images/img.jpg" alt="..." class="img-circle profile_img">
+                <img src="assets/images/img.jpg" alt="..." class="img-circle profile_img">
               </div>
               <div class="profile_info">
                 <span>Welcome,</span>
-                <h2>John Doe</h2>
+                <h2>iyed ben farhat</h2>
               </div>
             </div>
             <!-- /menu profile quick info -->
@@ -100,10 +104,12 @@ if (
             <!-- sidebar menu -->
             <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
               <div class="menu_section">
-                
-                <ul class="nav side-menu">
+              <ul class="nav side-menu">
+                  <li><a href="indexP.php"><i class="fa-solid fa-boxes-stacked"></i> Produits </a>
+                  </li>
                   <li><a href="index.php"><i class="fa fa-home"></i> Commandes </a>
                   </li>
+
                 </ul>
               </div>
 
@@ -141,7 +147,7 @@ if (
               <ul class="nav navbar-nav navbar-right">
                 <li class="">
                   <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                    <img src="images/img.jpg" alt="">John Doe
+                    <img src="assets/images/img.jpg" alt="">Iyed ben farhat
                     <span class=" fa fa-angle-down"></span>
                   </a>
                   <ul class="dropdown-menu dropdown-usermenu pull-right">
@@ -251,7 +257,7 @@ if (
 
     ?>
      <div style="text-align: center;">
-                    <form style="color: #232323;"  method="POST" class="form-horizontal form-label-left">
+                    <form style="color: #232323;" action="" method="POST" class="form-horizontal form-label-left">
                     <input  type="hidden" name="numC" value="<?php echo $commande['numC']; ?>">
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Nom :
@@ -281,7 +287,7 @@ if (
                       </div>
                       <div class="ln_solid">
                       <div style="text-align: center;">
-                      <input type="submit" value="Save" style="
+                      <input name="submit" type="submit" value="Save" style="
                                     background-color: #AF3535; 
                                     border-radius: 10px;
                                     border: none;

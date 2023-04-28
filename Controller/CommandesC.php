@@ -1,7 +1,7 @@
 <?php
 include '../../config.php';
 
-include '../Model/Commandes.php';
+include './Model/Commandes.php';
 
 
 class CommandesC
@@ -35,7 +35,7 @@ class CommandesC
     function addCommandes($commandes)
     {
         $sql = "INSERT INTO commandes  
-        VALUES (NULL, :nom,:prenom, :adresse,:numTel)";
+        VALUES (NULL, :nom,:prenom, :adresse,:numTel, :id_produit)";
         $db = config::getConnexion();
         try {
             print_r($commandes->getnumtel());
@@ -44,7 +44,8 @@ class CommandesC
                 'nom' => $commandes->getnom(),
                 'prenom' => $commandes->getprenom(),
                 'adresse' => $commandes->getadresse(),
-                'numTel' => $commandes->getnumTel()
+                'numTel' => $commandes->getnumTel(),
+                'id_produit' => $commandes->getIdProduit()
             ]);
         } catch (Exception $e) {
             echo 'Error: ' . $e->getMessage();

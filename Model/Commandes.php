@@ -6,14 +6,16 @@ class Commandes
     private ?string $prenom = null;
     private ?string $adresse = null;
     private ?int $numTel= null;
+    private ?int $id_produit;
 
-    public function __construct($numC = null, $nom, $prenom, $adresse, $numTel)
+    public function __construct($numC = null, $nom, $prenom, $adresse, $numTel, $id_produit)
     {
         $this->numC = $numC;
         $this->nom = $nom;
         $this->prenom = $prenom;
         $this->adresse = $adresse;
         $this->numTel = $numTel;
+        $this->id_produit = $id_produit;
     }
 
     /**
@@ -85,6 +87,26 @@ class Commandes
     }
 
     /**
+     * Get the value of IdProdui
+     */
+    public function getIdProduit()
+    {
+        return $this->id_produit;
+    }
+
+    /**
+     * Set the value of IdProdui
+     *
+     * @return  self
+     */
+    public function setIdProduit($id_produit)
+    {
+        $this->numTel = $id_produit;
+
+        return $this;
+    }
+
+        /**
      * Get the value of numTel
      */
     public function getnumTel()

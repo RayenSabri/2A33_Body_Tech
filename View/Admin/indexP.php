@@ -1,13 +1,13 @@
 <?php
 
-include '../../Controller/CommandesC.php';
-include '../../Model/Commandes.php';
+include '../../Controller/produitsP.php';
+include '../../Model/produits.php';
 
 // create an instance of the controller
-$commandesC = new CommandesC();
+$produitsP = new produitsP();
 
 
-$listecommandes = $commandesC->listeCommandes();
+$listeproduits = $produitsP->listeproduits();
 
 
 ?>
@@ -74,8 +74,7 @@ $listecommandes = $commandesC->listeCommandes();
             <!-- sidebar menu -->
             <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
               <div class="menu_section">
-                
-                <ul class="nav side-menu">
+              <ul class="nav side-menu">
                   <li><a href="indexP.php"><i class="fa-solid fa-boxes-stacked"></i> Produits </a>
                   </li>
                   <li><a href="index.php"><i class="fa fa-home"></i> Commandes </a>
@@ -207,13 +206,17 @@ $listecommandes = $commandesC->listeCommandes();
         <!-- page content -->
         <div class="right_col" role="main">
           <div class="x_panel">
-            <div class="x_title">
-              <h2 style="color: #AF3535;">La liste des Commandes</h2>
-              <div class="clearfix"></div>
-            </div>
+          <div class="x_title">
+            <h2 style="color: #AF3535; display: inline-block;">La liste des produits</h2>
+            <a href="addProduit.php">
+            <button class="btn" type="button" style="display: inline-block; float: right; background-color: #AF3535; color:white">Ajouter Produit</button>
+            </a>
+            
+            <div class="clearfix"></div>
+          </div>
             <div class="x_content">
               <p class="text-muted font-13 m-b-30" style="color: #232323;">
-                Voici la liste des commandes
+                Voici la liste des produits
               </p>
               <div id="datatable_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
                 <div class="row">
@@ -225,36 +228,33 @@ $listecommandes = $commandesC->listeCommandes();
                     <label style="color: #232323;" >Search:<input type="search" class="form-control input-sm" placeholder="" aria-controls="datatable"></label></div></div></div><div class="row"><div class="col-sm-12"><table id="datatable" class="table table-striped table-bordered dataTable no-footer" role="grid" aria-describedby="datatable_info">
                 <thead>
                   <tr role="row" style="color: #AF3535;">
-                    <th class="sorting_asc" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" style="width: 190.2px;" aria-sort="ascending" aria-label="Name: activate to sort column descending">Numero Commande</th>
+                    <th class="sorting_asc" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" style="width: 190.2px;" aria-sort="ascending" aria-label="Name: activate to sort column descending">id Produit</th>
                     <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1"  aria-label="Position: activate to sort column ascending">Nom</th>
-                    <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1"  aria-label="Office: activate to sort column ascending">Prenom</th>
-                    <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1"  aria-label="Age: activate to sort column ascending">Adresse</th>
-                    <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1"  aria-label="Start date: activate to sort column ascending">Numero Telephone</th>
-                    <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1"  aria-label="Start date: activate to sort column ascending">Id Produit</th>
+                    <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1"  aria-label="Office: activate to sort column ascending">quantite</th>
+                    <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1"  aria-label="Office: activate to sort column ascending">prix</th>
                     <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1"  aria-label="Salary: activate to sort column ascending">Action</th></tr>
                 </thead>
 
 
                 <tbody>
-                    <?php foreach($listecommandes as $commandes) { ?>
+                    <?php foreach($listeproduits as $produits) { ?>
                       <tr role="row" class="odd" style="color: #232323;" >                   
-                        <td><?php echo $commandes['numC'];?></td>
-                        <td><?php echo $commandes['nom'];?></td>
-                        <td><?php echo $commandes['prenom'];?></td>
-                        <td><?php echo $commandes['adresse'];?></td>
-                        <td><?php echo $commandes['numTel'];?></td>
-                        <td><?php echo $commandes['id_produit'];?></td>
+                        <td><?php echo $produits['id'];?></td>
+                        <td><?php echo $produits['nom'];?></td>
+                        <td><?php echo $produits['quantite'];?></td>
+                        <td><?php echo $produits['prix'];?></td>
+                      
                         <td>   
                           <div>
-                          <form method="POST" action="deleteCommande.php" >
-                            <input type="hidden" name="numC"  value="<?php echo $commandes['numC'];?>">
+                          <form method="POST" action="deleteProduit.php" >
+                            <input type="hidden" name="id"  value="<?php echo $produits['id'];?>">
                               <button type="submit" name="delete" class="btn btn-danger" style="background-color: #AF3535;">
                                 <i class="fa fa-trash"></i> Delete
                               </button>
                           </form>    
 
-                          <form  method="POST" action="editCommande.php">
-                          <input  type="hidden" value="<?PHP echo $commandes['numC']; ?>" name="numC" >
+                          <form  method="POST" action="editProduit.php">
+                          <input  type="hidden" value="<?PHP echo $produits['id']; ?>" name="id" >
                             <button  type="submit" class="btn btn-warning"  name="update">
                               <i class="fa-solid fa-pen-to-square fa-fw"> </i> Update</button>
                           </form>

@@ -1,3 +1,16 @@
+<?php
+
+include '../../Controller/produitsP.php';
+include '../../Model/produits.php';
+
+// create an instance of the controller
+$produitsP = new produitsP();
+
+
+$listeproduits = $produitsP->listeproduits();
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -107,12 +120,13 @@ https://templatemo.com/tm-546-sixteen-clothing
               <a href="products.html">Voir tous les produits <i class="fa fa-angle-right"></i></a>
             </div>
           </div>
+          <?php foreach($listeproduits as $produits) { ?>
           <div class="col-md-4">
             <div class="product-item">
-              <a href="panier.php"><img src="assets/images/product_01.jpg" alt=""></a>
+              <a href="commande.php?id_produit=<?php echo $produits['id']; ?>"><img src="assets/images/product_01.jpg" alt=""></a>
               <div class="down-content">
-                <a href="#"><h4>body tech EMS</h4></a>
-                <h6>199DT</h6>
+                <a href="#"><h4><?php echo $produits['nom'];?></h4></a>
+                <h6><?php echo $produits['prix'];?> Dt</h6>
                 <p>Le seul appareil du marché qui produit une sensation confortable et agréable tout en soumettant les muscles à un travail intense et profond..</p>
                 <ul class="stars">
                   <li><i class="fa fa-star"></i></li>
@@ -121,100 +135,14 @@ https://templatemo.com/tm-546-sixteen-clothing
                   <li><i class="fa fa-star"></i></li>
                   <li><i class="fa fa-star"></i></li>
                 </ul>
-                <span>Reviews (24)</span>
+                <span>
+                  <a class="btn" href="commande.php?id_produit=<?php echo $produits['id']; ?>" style="display: inline-block; float: right; background-color: #AF3535; color:white">Ajouter Commande</a>
+                </span>
+
               </div>
             </div>
           </div>
-          <div class="col-md-4">
-            <div class="product-item">
-              <a href="panier.php"><img src="assets/images/product_02.jpg" alt=""></a>
-              <div class="down-content">
-                <a href="#"><h4>Body tech Shape</h4></a>
-                <h6>189 DT</h6>
-                <p>.</p>body tech Shape est un tout nouveau système d’entraînement qui utilise la technologie EMS et fait travailler simultanément différentes parties du corps, avec des résultats bien meilleurs que ceux de l’exercice classique.
-                <ul class="stars">
-                  <li><i class="fa fa-star"></i></li>
-                  <li><i class="fa fa-star"></i></li>
-                  <li><i class="fa fa-star"></i></li>
-                  <li><i class="fa fa-star"></i></li>
-                  <li><i class="fa fa-star"></i></li>
-                </ul>
-                <span>Reviews (21)</span>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="product-item">
-              <a href="#"><img src="assets/images/product_03.jpg" alt=""></a>
-              <div class="down-content">
-                <a href="#"><h4>body tech premium pack</h4></a>
-                <h6>169 DT</h6>
-                <p>Sixteen Clothing is free CSS template provided by TemplateMo.</p>
-                <ul class="stars">
-                  <li><i class="fa fa-star"></i></li>
-                  <li><i class="fa fa-star"></i></li>
-                  <li><i class="fa fa-star"></i></li>
-                  <li><i class="fa fa-star"></i></li>
-                  <li><i class="fa fa-star"></i></li>
-                </ul>
-                <span>Reviews (36)</span>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="product-item">
-              <a href="#"><img src="assets/images/product_04.jpg" alt=""></a>
-              <div class="down-content">
-                <a href="#"><h4>Body Tech multivitamins</h4></a>
-                <h6>59 DT</h6>
-                <p>Une meilleure récupération. Après un effort intense, le corps a besoin de repos..</p>
-                <ul class="stars">
-                  <li><i class="fa fa-star"></i></li>
-                  <li><i class="fa fa-star"></i></li>
-                  <li><i class="fa fa-star"></i></li>
-                  <li><i class="fa fa-star"></i></li>
-                  <li><i class="fa fa-star"></i></li>
-                </ul>
-                <span>Reviews (48)</span>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="product-item">
-              <a href="#"><img src="assets/images/product_05.jpg" alt=""></a>
-              <div class="down-content">
-                <a href="#"><h4>Body Tech calories</h4></a>
-                <h6>250 DT</h6>
-                <p>c'est une machine smart qui permet a l'utilisateur de calculer les  calories.</p>
-                <ul class="stars">
-                  <li><i class="fa fa-star"></i></li>
-                  <li><i class="fa fa-star"></i></li>
-                  <li><i class="fa fa-star"></i></li>
-                  <li><i class="fa fa-star"></i></li>
-                  <li><i class="fa fa-star"></i></li>
-                </ul>
-                <span>Reviews (16)</span>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="product-item">
-              <a href="#"><img src="assets/images/product_06.jpg" alt=""></a>
-              <div class="down-content">
-                <a href="#"><h4>Body Tech Watch</h4></a>
-                <h6>69 DT</h6>
-                <p>c'est une montre smart qui permet au utilisateur de calculer les battements de coeur.</p>
-                <ul class="stars">
-                  <li><i class="fa fa-star"></i></li>
-                  <li><i class="fa fa-star"></i></li>
-                  <li><i class="fa fa-star"></i></li>
-                  <li><i class="fa fa-star"></i></li>
-                  <li><i class="fa fa-star"></i></li>
-                </ul>
-                <span>Reviews (32)</span>
-              </div>
-            </div>
-          </div>
+          <?php } ?> 
         </div>
       </div>
     </div>

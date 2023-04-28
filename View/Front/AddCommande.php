@@ -21,7 +21,7 @@ if (
         !empty($_POST["adresse"]) &&
         !empty($_POST["numTel"])
     ) {
-        $commandes = new Commande(
+        $commandes = new CommandesC(
             null,
             $_POST['nom'],
             $_POST['prenom'],

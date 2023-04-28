@@ -1,15 +1,38 @@
 <?php
 
-include '../../Controller/CommandesC.php';
-include '../../Model/Commandes.php';
+include '../../Controller/produitsP.php';
+include '../../Model/produits.php';
+
+$error = "";
+
+// create produits
+$produits = null;
 
 // create an instance of the controller
-$commandesC = new CommandesC();
-
-
-$listecommandes = $commandesC->listeCommandes();
-
-
+$produitsP = new produitsP();
+if (
+    isset($_POST["id"]) &&
+    isset($_POST["nom"]) &&
+    isset($_POST["quantite"]) &&
+    isset($_POST["prix"])
+) {
+    if (
+        !empty($_POST["id"]) &&
+        !empty($_POST['nom']) &&
+        !empty($_POST["quantite"]) &&
+        !empty($_POST["prix"]) 
+    ) {
+        $produits = new produits(
+            $_POST['id'],
+            $_POST['nom'],
+            $_POST['quantite'],
+            $_POST['prix']
+        );
+        $produitsP->updateProduit($produits, $_POST["id"]);
+        header('Location:indexP.php');
+    } else
+        $error = "Missing information";
+}
 ?>
 
 <!DOCTYPE html>
@@ -75,7 +98,7 @@ $listecommandes = $commandesC->listeCommandes();
             <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
               <div class="menu_section">
                 
-                <ul class="nav side-menu">
+              <ul class="nav side-menu">
                   <li><a href="indexP.php"><i class="fa-solid fa-boxes-stacked"></i> Produits </a>
                   </li>
                   <li><a href="index.php"><i class="fa fa-home"></i> Commandes </a>
@@ -206,91 +229,85 @@ $listecommandes = $commandesC->listeCommandes();
 
         <!-- page content -->
         <div class="right_col" role="main">
-          <div class="x_panel">
-            <div class="x_title">
-              <h2 style="color: #AF3535;">La liste des Commandes</h2>
-              <div class="clearfix"></div>
-            </div>
-            <div class="x_content">
-              <p class="text-muted font-13 m-b-30" style="color: #232323;">
-                Voici la liste des commandes
-              </p>
-              <div id="datatable_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
-                <div class="row">
-                  <div class="col-sm-6">
-                  
+        <div class="">
+            <div class="page-title">
+              <div class="title_left">
+                <h3>Modifier Le Produit</h3>
+              </div>
+
+              <div class="title_right">
+                <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+                  <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search for...">
+                    <span class="input-group-btn">
+                      <button class="btn btn-default" type="button">Go!</button>
+                    </span>
+                  </div>
                 </div>
-                <div class="col-sm-6">
-                  <div id="datatable_filter" class="dataTables_filter">
-                    <label style="color: #232323;" >Search:<input type="search" class="form-control input-sm" placeholder="" aria-controls="datatable"></label></div></div></div><div class="row"><div class="col-sm-12"><table id="datatable" class="table table-striped table-bordered dataTable no-footer" role="grid" aria-describedby="datatable_info">
-                <thead>
-                  <tr role="row" style="color: #AF3535;">
-                    <th class="sorting_asc" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" style="width: 190.2px;" aria-sort="ascending" aria-label="Name: activate to sort column descending">Numero Commande</th>
-                    <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1"  aria-label="Position: activate to sort column ascending">Nom</th>
-                    <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1"  aria-label="Office: activate to sort column ascending">Prenom</th>
-                    <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1"  aria-label="Age: activate to sort column ascending">Adresse</th>
-                    <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1"  aria-label="Start date: activate to sort column ascending">Numero Telephone</th>
-                    <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1"  aria-label="Start date: activate to sort column ascending">Id Produit</th>
-                    <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1"  aria-label="Salary: activate to sort column ascending">Action</th></tr>
-                </thead>
-
-
-                <tbody>
-                    <?php foreach($listecommandes as $commandes) { ?>
-                      <tr role="row" class="odd" style="color: #232323;" >                   
-                        <td><?php echo $commandes['numC'];?></td>
-                        <td><?php echo $commandes['nom'];?></td>
-                        <td><?php echo $commandes['prenom'];?></td>
-                        <td><?php echo $commandes['adresse'];?></td>
-                        <td><?php echo $commandes['numTel'];?></td>
-                        <td><?php echo $commandes['id_produit'];?></td>
-                        <td>   
-                          <div>
-                          <form method="POST" action="deleteCommande.php" >
-                            <input type="hidden" name="numC"  value="<?php echo $commandes['numC'];?>">
-                              <button type="submit" name="delete" class="btn btn-danger" style="background-color: #AF3535;">
-                                <i class="fa fa-trash"></i> Delete
-                              </button>
-                          </form>    
-
-                          <form  method="POST" action="editCommande.php">
-                          <input  type="hidden" value="<?PHP echo $commandes['numC']; ?>" name="numC" >
-                            <button  type="submit" class="btn btn-warning"  name="update">
-                              <i class="fa-solid fa-pen-to-square fa-fw"> </i> Update</button>
-                          </form>
-                    </div>
-                        </td>
-                      </tr>
-                    <?php } ?>
-                </tbody>
-
-              </table>
+              </div>
             </div>
-          </div>
-          <div class="row"><div class="col-sm-5">
-            <div class="dataTables_info" id="datatable_info" role="status" aria-live="polite">
+            <div class="clearfix"></div>
+            <div class="row">
+              <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                  <div class="x_title">
+                    
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+                    <br />
+                    <?php
+                if (isset($_POST['id'])) {
+                    $produits = $produitsP->showproduits($_POST['id']);
 
+                ?> 
+                    <form action="" method="post" id="demo-form2" class="form-horizontal form-label-left">
+                    <input type="hidden" id="id" name="id" value="<?php echo $produits['id']; ?>">
+
+                      <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Nom
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                          <input name="nom" type="text" id="nom" required="required" class="form-control col-md-7 col-xs-12" value="<?php echo $produits['nom']; ?>">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Quantité
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                          <input type="text" id="quantite" name="quantite" required="required" class="form-control col-md-7 col-xs-12" value="<?php echo $produits['quantite']; ?>">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Prix</label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                          <input id="prix" class="form-control col-md-7 col-xs-12" type="text" name="prix" value="<?php echo $produits['prix']; ?>">
+                        </div>
+                      </div>
+
+                      <div class="ln_solid"></div>
+                      <div class="form-group">
+                        <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                          <button class="btn" id="form-submit" type="submit" style="background-color: #AF3535; color:white">Ajouter</button>
+                        </div>
+                      </div>
+
+                    </form>
+                  </div>
+                  <?php
+    }
+    ?>
+               
+                </div>
+              </div>
             </div>
-          </div>
-          <br>
-          <br>
-          <br>
-          <br>
-           <!--
-          <div class="col-sm-7">
-            <div class="dataTables_paginate paging_simple_numbers" id="datatable_paginate">
-              <ul class="pagination">
-                <li class="paginate_button previous disabled" id="datatable_previous">
-                  <a href="#" aria-controls="datatable" data-dt-idx="0" tabindex="0">Previous</a>
-                </li>
-                <li class="paginate_button active">
-                  <a href="#" aria-controls="datatable" data-dt-idx="1" tabindex="0">1</a></li><li class="paginate_button "><a href="#" aria-controls="datatable" data-dt-idx="2" tabindex="0">2</a></li><li class="paginate_button "><a href="#" aria-controls="datatable" data-dt-idx="3" tabindex="0">3</a></li><li class="paginate_button "><a href="#" aria-controls="datatable" data-dt-idx="4" tabindex="0">4</a></li><li class="paginate_button "><a href="#" aria-controls="datatable" data-dt-idx="5" tabindex="0">5</a></li><li class="paginate_button "><a href="#" aria-controls="datatable" data-dt-idx="6" tabindex="0">6</a></li><li class="paginate_button next" id="datatable_next"><a href="#" aria-controls="datatable" data-dt-idx="7" tabindex="0">Next</a></li></ul></div></div></div></div>
-            </div>
-          </div>
-        -->
 
-
-        </div>
+    <br><br><br><br><br><br>
+    <br><br>
+              </div>
+            
+          </div>
+         
         <!-- /page content -->
 
         <!-- footer content -->
