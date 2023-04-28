@@ -15,7 +15,8 @@ if(isset($_POST['id']) &&
 ) {
     $offre = new Offre($_POST['id'], $_POST['titre'], $_POST['description'], $_POST['prix'], $_POST['date']);
     $offreC->modifier_offre($offre, $_POST['id']);
-    echo '<script>alert("Offre modifiée avec succès!"); window.location.href="ListOffre.php";</script>';
+    echo '<script>window.Notification && Notification.requestPermission().then(function(permission) { if (permission === "granted") { new Notification("Offre modifiée avec succès!"); } }); window.location.href="ListOffre.php";</script>';
+
 }
 ?>
 <!DOCTYPE html>

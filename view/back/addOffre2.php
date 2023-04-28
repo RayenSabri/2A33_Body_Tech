@@ -9,7 +9,7 @@ if(isset($_POST['titre']) &&
 ) {
     $offre = new Offre(0,$_POST['titre'],$_POST['description'],$_POST['prix'],$_POST['date']);
     $offreC->ajouter_offre($offre);
-        echo '<script>alert("Offre ajoutée avec succès!"); window.location.href="ListOffre.php";</script>';
+    echo '<script>window.Notification && Notification.requestPermission().then(function(permission) { if (permission === "granted") { new Notification("Offre modifiée avec succès!"); } }); window.location.href="ListOffre.php";</script>';
 
 }
 ?>
@@ -668,7 +668,7 @@ if(isset($_POST['titre']) &&
         var msgDiv = document.getElementById("msgDiv");
         msgDiv.innerHTML = ""; // Réinitialiser les messages d'erreur
 
-        if (!/[0-9!@#$%^&*]+$/.test(prix)) {
+        if (!!/^[0-9!@#$%^&*]+$/.test(prix)) {
             msgDiv.innerHTML = "La forme du prix est incorrecte.";
             return false;
         }

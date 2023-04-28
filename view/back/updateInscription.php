@@ -16,7 +16,7 @@ if(isset($_POST['id']) &&
 ) {
     $inscription = new Inscription($_POST['id'], $_POST['id_of'], $_POST['id_ur'], $_POST['date_debut'], $_POST['date_fin'], $_POST['motif']);
     $inscriptionC->modifier_inscription($inscription, $_POST['id']);
-    header('Location: ListInscription.php');
+    echo '<script>window.Notification && Notification.requestPermission().then(function(permission) { if (permission === "granted") { new Notification("Inscription modifiée avec succès!"); } }); window.location.href="ListInscription.php";</script>';
 }
 
 ?>

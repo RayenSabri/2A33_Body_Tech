@@ -2,7 +2,7 @@
 include_once 'C:/xampp/htdocs/projet/Controller/inscriptionC.php';
 require_once 'C:/xampp/htdocs/projet/model/inscription.php';
 $inscriptionC = new InscriptionC();
-$liste = $inscriptionC->afficher_offre(); // appel fonction d'affichage
+$liste = $inscriptionC->afficher_offre();
 
 if(isset($_POST['id_of']) &&
     isset($_POST['id_ur']) &&
@@ -12,7 +12,7 @@ if(isset($_POST['id_of']) &&
 ) {
     $inscription = new Inscription(0,$_POST['id_of'],$_POST['id_ur'],$_POST['date_debut'],$_POST['date_fin'],$_POST['motif']);
     $inscriptionC->ajouter_inscription($inscription);
-    header('Location: ListInscription.php');
+    echo '<script>window.Notification && Notification.requestPermission().then(function(permission) { if (permission === "granted") { new Notification("Inscription modifiée avec succès!"); } }); window.location.href="ListInscription.php";</script>';
 
 }
 ?>
@@ -365,6 +365,7 @@ if(isset($_POST['id_of']) &&
                                         </div>
                                     </div>
                                 </form>
+                            <div id="msgDiv" style="color: red;"></div>
                             </div>
                         </div>
                     </div>
@@ -430,40 +431,24 @@ if(isset($_POST['id_of']) &&
         var date_fin = document.getElementById('date_fin').value;
         var motif = document.getElementById('motif').value;
 
-        var ok = true;
+        var msgDiv = document.getElementById("msgDiv");
+        msgDiv.innerHTML = ""; // Réinitialiser les messages d'erreur
 
-
-
-
-      /*  if (!/^[A-Z0-9]+$/.test(codePromo)) {
-            alert("Le code promo doit contenir seulement des lettres majuscules et des chiffres.");
-            document.getElementById("msgDiv12").innerHTML = "id doit etre positive! ";
-            preventdefault();
-            returnToPreviousPage();
-            return false;
-        }
-        if (!/^[A-Za-z]+$/.test(titre)) {
-            alert("Le titre contient d'autres caractères en plus des lettres");
-            document.getElementById("msgDiv12").innerHTML = "id doit etre positive! ";
-            preventdefault();
-            returnToPreviousPage();
-            return false;
-        }
-        if (!!/^[A-Za-z0-9!@#$%^&*]+$/.test(description)) {
-            alert("La description doit contenir des lettres et des symboles.");
-            document.getElementById("msgDiv12").innerHTML = "id doit etre positive! ";
-            preventdefault();
-            returnToPreviousPage();
-            return false;
-        }*/
         if ( id_ur === '' || date_debut === '' || date_fin === '' || motif === '') {
-            alert('Veuillez remplir tous les champs');
+            msgDiv.innerHTML = "Veuillez remplir tous les champs";
+            return false;
+        } else if (new Date(date_debut) > new Date(date_fin)) {
+            msgDiv.innerHTML = "La date de début ne peut pas être supérieure à la date de fin";
+            return false;
+        }
+        else if (!/^[A-Za-z\s]+$/.test(motif)) {
+            msgDiv.innerHTML = "le motif doit contenir seulement des lettres.";
             return false;
         } else {
             document.getElementById('form').submit();
         }
 
         return true;
-
     }
+s
 </script>
