@@ -1,11 +1,19 @@
 <?php
 include_once 'C:/xampp/htdocs/projet/Controller/OffreC.php';
-include_once 'C:/xampp/htdocs/projet/model/Offre.php'; ?>
+include_once 'C:/xampp/htdocs/projet/model/Offre.php';
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <?php
 $offreC = new OffreC();
 $liste = $offreC->afficher_offre();
+
+
+
+
 ?>
 <head>
 
@@ -146,31 +154,86 @@ $liste = $offreC->afficher_offre();
                     <input type="date" id="dateFin" name="date_fin">
                     <!-- Bouton de soumission du formulaire -->
                     <input type="submit" value="Inscrir">
+
                 </form>
             </div>
         </div>
     </div>
+
+    
     <div class="numbers-section">
         <div class="container">
             <div class="row">
                 <?php
-                foreach ($liste as $offre) {
-                ?>
+                // Définir le tableau $distance en dehors de la boucle foreach
+                $distance = [];
 
+                foreach ($liste as $offre) {
+                    // Ajouter la distance dans le tableau
+                    $distance[$offre['id']] = strtotime($offre['date']) - time();
+                    ?>
                     <div class="col-md-4"> <!-- Modifier la classe col-md-12 en col-md-4 pour afficher les offres horizontalement -->
                         <div class="product-content text-center">
                             <img src="../front/images/offre.png" height="200" width="200" class="center" />
                             <h4 class="title"><a href="#"><?php echo $offre['titre'] ?></a></h4>
                             <p><?php echo $offre['prix'] ?></p>
                             <p><?php echo $offre['description'] ?></p>
-                            <p><p>Offre valable jusqu'au</p><?php echo $offre['date'] ?></p>
+                            <p>Offre valable jusqu'au</p>
                             <br>
-                            <a class="btn btn-primary" href="#" onclick="afficherFormulaire('<?php echo $offre['id'] ?>')">Inscrir</a>
+
+                            <p>
+                                <?php
+                                if ($distance[$offre['id']] > 0) {
+                                    echo '<i class="fa fa-clock-o fa-2x"></i>';
+                                }
+                                ?><span id="countdown_<?php echo $offre['id'] ?>" style="font-size: 24px;"></span>
+                            </p>
+
+                            <script>
+                                // Set the date we're counting down to
+                                var countDownDate_<?php echo $offre['id'] ?> = new Date("<?php echo $offre['date'] ?>").getTime();
+
+                                // Update the countdown every 1 second
+                                var x_<?php echo $offre['id'] ?> = setInterval(function() {
+
+                                    // Get the current time
+                                    var now_<?php echo $offre['id'] ?> = new Date().getTime();
+
+                                    // Find the distance between now and the count down date
+                                    var distance_<?php echo $offre['id'] ?> = countDownDate_<?php echo $offre['id'] ?> - now_<?php echo $offre['id'] ?>;
+
+                                    // Time calculations for days, hours, minutes and seconds
+                                    var days_<?php echo $offre['id'] ?> = Math.floor(distance_<?php echo $offre['id'] ?> / (1000 * 60 * 60 * 24));
+                                    var hours_<?php echo $offre['id'] ?> = Math.floor((distance_<?php echo $offre['id'] ?> % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                                    var minutes_<?php echo $offre['id'] ?> = Math.floor((distance_<?php echo $offre['id'] ?> % (1000 * 60 * 60)) / (1000 * 60));
+                                    var seconds_<?php echo $offre['id'] ?> = Math.floor((distance_<?php echo $offre['id'] ?> % (1000 * 60)) / 1000);
+
+                                    // Output the result in an element with id="countdown_<?php echo $offre['id'] ?>"
+                                    document.getElementById("countdown_<?php echo $offre['id'] ?>").innerHTML = days_<?php echo $offre['id'] ?> + "d " + hours_<?php echo $offre['id'] ?> + "h "
+                                        + minutes_<?php echo $offre['id'] ?> + "m " + seconds_<?php echo $offre['id'] ?> + "s ";
+
+                                    // If the countdown is finished, remove the offer
+
+                                    if (distance_<?php echo $offre['id'] ?> < 0) {
+                                        clearInterval(x_<?php echo $offre['id'] ?>);
+                                        document.getElementById("countdown_<?php echo $offre['id'] ?>").innerHTML = "Expired";
+                                        // Remove the offer from the DOM
+                                        document.querySelector("[data-id='<?php echo $offre['id'] ?>']").remove();
+                                    }
+                                }, 1000);
+                            </script>
+
+
+                            <br>
+                            <?php if ($distance[$offre['id']] >= 0) { ?>
+                                <a class="btn btn-primary" href="#" onclick="afficherFormulaire('<?php echo $offre['id'] ?>')">Inscrir</a>
+                            <?php } ?>
                         </div>
                     </div>
+                <?php } ?>
 
-                <?php  }?>
             </div>
+
         </div>
 
     </div>
@@ -262,6 +325,7 @@ $liste = $offreC->afficher_offre();
                         text: 'Votre lien de paiement a été envoyé a votre email!',
                     });
                     document.getElementById('formulaireDates').style.display = 'none';
+                    
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     // Handle any errors that may occur during the Ajax request
