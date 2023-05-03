@@ -17,6 +17,20 @@ class InscriptionC{
         }
     }
 
+    function getOffreById($id)
+    {
+        $requete = "select * from offre where id= '".$id."'";
+        $config = config::getConnexion();
+        try {
+            $querry = $config->prepare($requete);
+            $querry->execute();
+            $result = $querry->fetch();
+            return $result ;
+        } catch (PDOException $th) {
+            echo $th->getMessage();
+        }
+    }
+
     public function afficher_offre(){
         $sql="SELECT * FROM offre" ;
         $db = config::getConnexion() ;
