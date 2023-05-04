@@ -1,6 +1,15 @@
 <?php
+
+
     include_once '../Model/admin.php';
     include_once '../Controller/adminC.php';
+    use PHPMailer\PHPMailer\PHPMailer;
+                use PHPMailer\PHPMailer\Exception;
+                
+                require 'PHPMailer/src/Exception.php';
+                require 'PHPMailer/src/PHPMailer.php';
+                require 'PHPMailer/src/SMTP.php';
+                
 
     $error = "";
 
@@ -9,11 +18,12 @@
 
     // create an instance of the controller
     $adminC = new adminC();
+
     if (
         isset($_POST["cin"]) &&
         isset($_POST["nom"]) &&
         isset($_POST["prenom"]) &&
-        isset($_POST["salaire"]) &&
+        isset($_POST["type"]) &&
         isset($_POST["email"]) &&
         isset($_POST["tel"]) &&
         isset($_POST["password"])
@@ -22,27 +32,63 @@
             !empty($_POST["cin"]) &&
             !empty($_POST["nom"]) &&
             !empty($_POST["prenom"]) &&
-            !empty($_POST["salaire"]) &&
+            !empty($_POST["type"]) &&
             !empty($_POST["email"]) &&
             !empty($_POST["tel"]) &&
             !empty($_POST["password"])
         ) {
+
+            
             $admin = new admin(
+                
                 $_POST['cin'],
                 $_POST['nom'],
                 $_POST['prenom'],
-                $_POST['salaire'],
+                $_POST['type'],
                 $_POST['email'],
                 $_POST['tel'],
                 $_POST['password']
+                
             );
-            $adminC->ajouteradmin($admin);
-           
+            if($adminC->ajouteradmin($admin))
+            /*
+            header('location addA.php');
+            else*/
+            {
+                
+                if(isset($_POST['submit'])){
+                    $name = ($_POST['nom']);
+                    $email = ($_POST['email']);
+                    $subject = ($_POST['type']);
+                    $message = ($_POST['tel']);
+                
+                    $mail = new PHPMailer(true);
+                    $mail->isSMTP();
+                    $mail->Host = 'smtp.gmail.com';
+                    $mail->SMTPAuth = true;
+                    $mail->Username = 'yassinouri4@gmail.com';
+                    $mail->Password = 'vadjjbzinffzkyka';
+                    $mail->Port = 465;
+                    $mail->SMTPSecure = 'ssl';
+                    $mail->isHTML(true);
+                    $mail->setFrom('yassinouri4@gmail.com', "crococoders");
+                    $val=random_int(100000,999999);
+                    $mail->addAddress($email);
+                    $mail->Subject =("email verification");
+                    $mail->Body = ("your verification code is :".$val);
+                    $mail->send();
+                
+                    header("Location: ./response.html");
+                }
+            }
             exit();
         } else {
             $error = "Missing information";
         }
+
     }
+
+
 
 ?>
 <!DOCTYPE html>
@@ -102,7 +148,7 @@
 <body>
 	<div class="container">
 		<h2>Créer un compte administrateur</h2>
-		<form action="addA.php" method="post" name="inscription">
+		<form action="email.php" method="post" name="inscription">
 			<label for="cin">CIN</label>
 			<input type="number" id="cin" name="cin" placeholder="CIN">
 
@@ -112,8 +158,8 @@
 			<label for="prenom">Prénom</label>
 			<input type="text" id="prenom" name="prenom" placeholder="Prénom">
 
-			<label for="salaire">Salaire</label>
-			<input type="number" id="salaire" name="salaire" placeholder="Salaire">
+			<label for="type">type</label>
+			<input type="text" id="salaire" name="type" placeholder="type">
 
 			<label for="email">Adresse email</label>
 			<input type="email" id="email" name="email" placeholder="Adresse email">
@@ -127,12 +173,12 @@
 			<label for="confirm-password">Confirmer le mot de passe</label>
 			<input type="text" id="confirm_password" name="confirm_password" placeholder="Confirmer le mot de passe">
            
-			<button  type="submit"  id="mybtn" onclick="passvalidation()"  >create</button>
+			<button  type="submit" name="submit" id="mybtn" onclick="passvalidation()"  >Créer un compte</button>
             
             <input type="reset" value="reset">
 			
             <div class="form-footer">
-                <a href="index.html">J'ai déjà un compte</a>
+                <a href="index.php">J'ai déjà un compte</a>
             </div>
     </form>
 </div>
@@ -202,34 +248,10 @@ for(i=0;i<salaire.length;i++)
  
  {  if ( salaire.length<0 || isNaN(salaire) || mh.indexOf(salaire.charAt(i))==-1) {
 
-    alert("salaire invalide");return false;
+    alert("type invalide");return false;
 }else
 {qa++}}
-/*
- //ali@yahoo.fr
-l=email.length;//12
-p1=email.indexOf('@'); //3 
-p2=email.indexOf('.'); //9  
-c=email.charAt(0); 
-ch1=email.substr(0,p1); l1=ch1.length;  //0,3
-ch2=email.substr(p1+1,p2-p1-1); l2=ch2.length;//4,5 
-ch3=email.substr(p2+1,l-p2-1); l3=ch3.length; //10,2
-for(i=1;i<l1;i++) 
- {if(bh.indexOf(ch1.charAt(i))==-1)
-{alert("email invalide ");return false;}}
-for(i=0;i<l2;i++) 
- {if(dh.indexOf(ch2.charAt(i))==-1)
-{alert("email invalide");return false;}  
-s=0;}
-for(i=0;i<l2;i++) 
-{ if(mh.indexOf(ch2.charAt(i))!=-1)
-{s++;} }
-for(i=0;i<l3;i++) 
- {if(bh.indexOf(ch3.charAt(i))==-1)
-{alert("email invalide");return false;}}
-if(l1==0||l2<4||l2>6||(l3!=2&&l3!=3)||p1==-1||p2==-1||c<'A'||c>'Z'||s<2) 
-{alert("email invalide");return false;}
-*/
+
 for(i=0;i<phoneNumber.length;i++)
 
 
@@ -283,16 +305,7 @@ if(kh.indexOf(password2.charAt(i))!=-1){r++;}
 }}
   }
      
-   /*
-     document.querySelector("form").addEventListener("submit",function(e)
-          
-     {
-        e.preventDefault();
-      
-
-     ); 
-     
-    */
+  
 </script>
  
         
